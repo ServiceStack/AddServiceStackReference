@@ -161,7 +161,7 @@ public class TechStacksTests {
     	    client.post(new Overview());
     	    fail("Should throw WebServiceException");
     	} catch (WebServiceException ex) {
-    		assertEquals("aaa", ex.getErrorCode());
+    		assertEquals("Unauthorized", ex.getStatusDescription());
     	}
     }
     
