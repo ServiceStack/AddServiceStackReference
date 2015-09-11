@@ -3,6 +3,7 @@ package net.servicestack.tests;
 import static org.junit.Assert.*;
 import static net.servicestack.tests.techstacks.*;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -33,6 +34,18 @@ import java.util.ArrayList;
 public class TechStacksTests {
 
     JsonServiceClient client = new JsonServiceClient("http://techstacks.io");
+
+	@BeforeClass 
+    public static void setUpClass() {      
+		JsonServiceClient.GlobalRequestFilter = new ConnectionFilter() {
+		    @Override public void exec(HttpURLConnection conn) {
+		        String verb = conn.getRequestMethod();
+		        if (verb == HttpMethods.Post || verb == HttpMethods.Put) {
+		            conn.setDoOutput(true);
+		        }
+		    }
+		};
+	}
 
     @Test
     public void test_Can_GET_TechStacks_Overview(){
@@ -139,7 +152,19 @@ public class TechStacksTests {
         assertEquals("title", dto.getTitle());
         assertEquals(TechnologyTier.ProgrammingLanguage, dto.getValue());
     }
-
+    
+    @Test
+    public void test_Can_handle_Unauthorized_Response()
+    {
+    	try {
+    	    //Auth required, should throw a WebServiceException
+    	    client.post(new Overview());
+    	    fail("Should throw WebServiceException");
+    	} catch (WebServiceException ex) {
+    		assertEquals("aaa", ex.getErrorCode());
+    	}
+    }
+    
     @Test
     public void test_Can_deserialize_Overview() throws IOException {
 
