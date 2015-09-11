@@ -35,17 +35,17 @@ public class TechStacksTests {
 
     JsonServiceClient client = new JsonServiceClient("http://techstacks.io");
 
-	@BeforeClass 
-    public static void setUpClass() {      
-		JsonServiceClient.GlobalRequestFilter = new ConnectionFilter() {
-		    @Override public void exec(HttpURLConnection conn) {
-		        String verb = conn.getRequestMethod();
-		        if (verb == HttpMethods.Post || verb == HttpMethods.Put) {
-		            conn.setDoOutput(true);
-		        }
-		    }
-		};
-	}
+//	@BeforeClass 
+//    public static void setUpClass() {      
+//		JsonServiceClient.GlobalRequestFilter = new ConnectionFilter() {
+//		    @Override public void exec(HttpURLConnection conn) {
+//		        String verb = conn.getRequestMethod();
+//		        if (verb == HttpMethods.Post || verb == HttpMethods.Put) {
+//		            conn.setDoOutput(true);
+//		        }
+//		    }
+//		};
+//	}
 
     @Test
     public void test_Can_GET_TechStacks_Overview(){
